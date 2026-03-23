@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+  <meta charset="UTF-8"/>
+  <!-- Favicon / Tab Icon -->
+  <link rel="icon"             type="image/jpeg" href="logo.jpeg"/>
+  <link rel="shortcut icon"    type="image/jpeg" href="logo.jpeg"/>
+  <link rel="apple-touch-icon"                   href="logo.jpeg"/>
+  <meta name="theme-color"     content="#f59e0b"/>
+  <meta property="og:image"    content="logo.jpeg"/>
+  <meta property="og:title"    content="FocusForge — Study Planner"/>
+  <meta property="og:description" content="Your personal study command center. Plan. Track. Achieve."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script>(function(){var t=localStorage.getItem("ff_theme")||"dark";document.getElementById("htmlRoot").setAttribute("data-theme",t);})();</script>
+  <title>Login — FocusForge</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body class="auth-page">
+
+  <div class="landing-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+  </div>
+
+  <div class="auth-card">
+    <a href="index.html" class="back-link">← Back</a>
+    <div class="auth-header">
+      <a href="index.html" class="logo-link"><img src="logo.jpeg" alt="FocusForge" class="auth-logo"/></a>
+      <h2>Welcome Back</h2>
+      <p>Login to your study dashboard</p>
+    </div>
+
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="Your username" autocomplete="username"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Your password" autocomplete="current-password"/>
+    </div>
+
+    <div id="loginError" class="error-msg" style="display:none;"></div>
+
+    <button class="btn btn-primary btn-full" onclick="login()">Login</button>
+
+    <p class="auth-switch">No account? <a href="register.html">Register</a></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

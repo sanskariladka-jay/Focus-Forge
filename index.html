@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FocusForge — Study Planner</title>
+  <script>
+    (function(){ var t=localStorage.getItem('ff_theme')||'dark'; document.getElementById('htmlRoot').setAttribute('data-theme',t); })();
+  </script>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body class="landing-page">
+
+  <div class="landing-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <div class="landing-container">
+    <a href="index.html" class="logo-link"><div class="brand-icon"><img src="logo.jpeg" alt="FocusForge Logo" class="logo-img"/></div></a>
+    <h1 class="brand-title">FocusForge</h1>
+    <p class="brand-tagline">Your personal study command center.<br/>Plan. Track. Achieve.</p>
+
+    <div class="landing-actions">
+      <a href="login.html" class="btn btn-primary">Login</a>
+      <a href="register.html" class="btn btn-outline">Create Account</a>
+    </div>
+
+    <div class="landing-features">
+      <div class="feature-pill">📋 Task Manager</div>
+      <div class="feature-pill">🔁 Habit Tracker</div>
+      <div class="feature-pill">📅 Study Planner</div>
+    </div>
+  </div>
+
+</body>
+</html>
