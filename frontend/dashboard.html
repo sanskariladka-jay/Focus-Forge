@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+  <meta charset="UTF-8"/>
+  <!-- Favicon / Tab Icon -->
+  <link rel="icon"             type="image/jpeg" href="logo.jpeg"/>
+  <link rel="shortcut icon"    type="image/jpeg" href="logo.jpeg"/>
+  <link rel="apple-touch-icon"                   href="logo.jpeg"/>
+  <meta name="theme-color"     content="#f59e0b"/>
+  <meta property="og:image"    content="logo.jpeg"/>
+  <meta property="og:title"    content="FocusForge — Study Planner"/>
+  <meta property="og:description" content="Your personal study command center. Plan. Track. Achieve."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script>(function(){var t=localStorage.getItem("ff_theme")||"dark";document.getElementById("htmlRoot").setAttribute("data-theme",t);})();</script>
+  <title>Dashboard — FocusForge</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body class="dashboard-page" onload="initDashboard()">
+
+  <header class="dash-header">
+    <a href="index.html" class="logo-link dash-logo-link"><div class="dash-logo"><img src="logo.jpeg" alt="FocusForge" class="logo-img-sm"/> <span>FocusForge</span></div></a>
+    <div class="dash-header-right">
+      <!-- Streak badge -->
+      <div class="streak-badge" id="headerStreak" title="Current streak">🔥 <span id="streakCount">0</span> day streak</div>
+      <!-- Theme toggle -->
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle light/dark mode">🌙</button>
+      <!-- User + Account -->
+      <span class="user-badge" id="userBadge"></span>
+      <div class="profile-menu-wrap">
+        <button class="btn btn-profile" onclick="toggleProfileMenu()" id="profileMenuBtn">⚙️ Account</button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <button class="dropdown-item" onclick="openChangePassword()">🔑 Change Password</button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item danger" onclick="openDeleteProfile()">🗑️ Delete Profile</button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" onclick="logout()">🚪 Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="dash-container">
+
+    <!-- ══ LEVEL / XP BAR ══ -->
+    <div class="level-bar-card">
+      <div class="level-info">
+        <div class="level-avatar" id="levelEmoji">🌱</div>
+        <div class="level-details">
+          <div class="level-title-row">
+            <span class="level-title" id="levelTitle">Beginner</span>
+            <span class="level-num" id="levelNum">Level 1</span>
+          </div>
+          <div class="xp-bar-wrap">
+            <div class="xp-bar-track">
+              <div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div>
+            </div>
+            <span class="xp-text" id="xpText">0 / 100 XP</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-stats-row">
+        <div class="lstat"><span id="totalXP">0</span><small>Total XP</small></div>
+        <div class="lstat"><span id="statTasks">0/0</span><small>Tasks</small></div>
+        <div class="lstat"><span id="statHabits">0/0</span><small>Habits</small></div>
+        <div class="lstat"><span id="statPlans">0</span><small>Plans</small></div>
+        <div class="lstat"><span id="statSessions">0</span><small>Sessions</small></div>
+        <div class="lstat streak-lstat"><span id="currentStreak">0🔥</span><small>Streak</small></div>
+        <div class="lstat"><span id="longestStreak">0</span><small>Best Streak</small></div>
+      </div>
+    </div>
+
+    <!-- ══ STREAK CALENDAR ══ -->
+    <div class="streak-section card">
+      <div class="card-header">
+        <h2>🔥 Activity Streak</h2>
+        <div class="streak-badges-row">
+          <span class="streak-pill" id="streakPillCurrent">Current: 0 days</span>
+          <span class="streak-pill gold" id="streakPillBest">Best: 0 days</span>
+        </div>
+      </div>
+      <div class="streak-calendar" id="streakCalendar"></div>
+      <p class="streak-tip" id="streakTip">Complete a task, habit, or timer session today to keep your streak alive!</p>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- ══ TASKS ══ -->
+      <section class="card">
+        <div class="card-header">
+          <h2>📋 Study Tasks</h2>
+          <div class="card-header-right">
+            <!-- Subject filter -->
+            <select class="subject-filter" id="taskSubjectFilter" onchange="loadTasks()">
+              <option value="">All Subjects</option>
+              <option value="Math">📐 Math</option>
+              <option value="Science">🔬 Science</option>
+              <option value="English">📝 English</option>
+              <option value="History">📜 History</option>
+              <option value="Computer">💻 Computer</option>
+              <option value="Physics">⚛️ Physics</option>
+              <option value="Chemistry">🧪 Chemistry</option>
+              <option value="Biology">🧬 Biology</option>
+              <option value="Other">📌 Other</option>
+            </select>
+            <span class="badge" id="taskCount">0</span>
+          </div>
+        </div>
+        <!-- Add task row -->
+        <div class="task-add-row">
+          <input type="text" id="taskInput" placeholder="Add a new task..." onkeydown="if(event.key==='Enter') addTask()"/>
+          <select class="subject-select" id="taskSubject">
+            <option value="">Subject</option>
+            <option value="Math">📐 Math</option>
+            <option value="Science">🔬 Science</option>
+            <option value="English">📝 English</option>
+            <option value="History">📜 History</option>
+            <option value="Computer">💻 Computer</option>
+            <option value="Physics">⚛️ Physics</option>
+            <option value="Chemistry">🧪 Chemistry</option>
+            <option value="Biology">🧬 Biology</option>
+            <option value="Other">📌 Other</option>
+          </select>
+          <button class="btn btn-add" onclick="addTask()">Add</button>
+        </div>
+        <ul id="taskList" class="item-list"></ul>
+        <p class="empty-state" id="taskEmpty">No tasks yet. Add one above! 🎯</p>
+        <!-- XP hint -->
+        <div class="xp-hint">✨ +10 XP per task completed</div>
+      </section>
+
+      <!-- ══ HABITS ══ -->
+      <section class="card">
+        <div class="card-header">
+          <h2>🔁 Habit Tracker</h2>
+          <span class="badge" id="habitCount">0</span>
+        </div>
+        <div class="input-row">
+          <input type="text" id="habitInput" placeholder="Add a new habit..." onkeydown="if(event.key==='Enter') addHabit()"/>
+          <button class="btn btn-add" onclick="addHabit()">Add</button>
+        </div>
+        <ul id="habitList" class="item-list"></ul>
+        <p class="empty-state" id="habitEmpty">No habits yet. Start one! 💪</p>
+        <div class="xp-hint">✨ +5 XP per habit completed</div>
+      </section>
+
+      <!-- ══ FOCUS TIMER ══ -->
+      <section class="card card-timer">
+        <div class="card-header">
+          <h2>⏱️ Focus Timer</h2>
+          <div class="timer-mode-tabs">
+            <button class="mode-tab active" id="tabPomodoro"   onclick="switchMode('pomodoro')">Pomodoro</button>
+            <button class="mode-tab"        id="tabShortBreak" onclick="switchMode('short')">Short Break</button>
+            <button class="mode-tab"        id="tabCustom"     onclick="switchMode('custom')">Custom</button>
+          </div>
+        </div>
+        <div class="timer-display-wrap">
+          <svg class="timer-ring" viewBox="0 0 220 220">
+            <circle class="ring-track"    cx="110" cy="110" r="96"/>
+            <circle class="ring-progress" cx="110" cy="110" r="96" id="timerRing"
+                    stroke-dasharray="603" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-center">
+            <div class="timer-digits" id="timerDisplay">25:00</div>
+            <div class="timer-label"  id="timerLabel">Focus</div>
+          </div>
+        </div>
+        <div class="custom-inputs" id="customInputs" style="display:none;">
+          <div class="custom-row">
+            <div class="custom-field"><label>Minutes</label><input type="number" id="customMin" min="0" max="99" value="10"/></div>
+            <div class="custom-field"><label>Seconds</label><input type="number" id="customSec" min="0" max="59" value="0"/></div>
+            <button class="btn btn-set" onclick="setCustomTimer()">Set</button>
+          </div>
+        </div>
+        <div class="session-label-row">
+          <input type="text" id="sessionLabel" placeholder="What are you focusing on? (optional)" maxlength="60"/>
+        </div>
+        <div class="timer-controls">
+          <button class="timer-btn reset-btn" onclick="resetTimer()" title="Reset">↺</button>
+          <button class="timer-btn play-btn"  onclick="toggleTimer()" id="timerPlayBtn">▶</button>
+          <button class="timer-btn skip-btn"  onclick="skipTimer()"  title="Skip">⏭</button>
+        </div>
+        <div class="xp-hint" style="margin-bottom:12px;">✨ +15 XP per completed session</div>
+        <div class="session-log-wrap">
+          <div class="session-log-header">
+            <span>🕐 Session Log</span>
+            <button class="clear-log-btn" onclick="clearSessionLog()">Clear</button>
+          </div>
+          <ul id="sessionLog" class="session-log"></ul>
+          <p class="empty-state" id="sessionLogEmpty" style="padding:8px 0 0;">No sessions yet. Start your first focus! 🔥</p>
+        </div>
+      </section>
+
+      <!-- ══ STUDY PLANNER — Multiple Plans ══ -->
+      <section class="card card-wide">
+        <div class="card-header">
+          <h2>📅 Study Planner</h2>
+          <div class="card-header-right">
+            <input type="date" id="studyDate" onchange="loadPlansForDate()"/>
+            <span class="plan-status" id="planStatus"></span>
+          </div>
+        </div>
+
+        <!-- Add plan item form -->
+        <div class="plan-add-row">
+          <select class="subject-select" id="planSubject">
+            <option value="">Subject</option>
+            <option value="Math">📐 Math</option>
+            <option value="Science">🔬 Science</option>
+            <option value="English">📝 English</option>
+            <option value="History">📜 History</option>
+            <option value="Computer">💻 Computer</option>
+            <option value="Physics">⚛️ Physics</option>
+            <option value="Chemistry">🧪 Chemistry</option>
+            <option value="Biology">🧬 Biology</option>
+            <option value="Other">📌 Other</option>
+          </select>
+          <input type="time" id="planTime" title="Start time (optional)"/>
+          <input type="text" id="planItemInput" placeholder="Add a plan item (e.g. Math revision Chapter 5)..." onkeydown="if(event.key==='Enter') addPlanItem()"/>
+          <button class="btn btn-add" onclick="addPlanItem()">Add</button>
+        </div>
+
+        <!-- Plan items list for selected date -->
+        <ul id="planItemList" class="plan-item-list"></ul>
+        <p class="empty-state" id="planItemEmpty">No plans for this date yet. Add one above! 📋</p>
+
+        <!-- Notes textarea -->
+        <div class="plan-notes-header">📝 Notes for this day</div>
+        <textarea id="studyPlan" placeholder="Write detailed notes for this date..."></textarea>
+        <div class="plan-footer-actions">
+          <button class="btn btn-save" onclick="saveNotes()">💾 Save Notes</button>
+          <button class="btn btn-clear" onclick="clearDayPlan()">🗑 Clear Day</button>
+        </div>
+        <div class="xp-hint">✨ +20 XP for saving a study plan</div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ══ LEVEL UP TOAST ══ -->
+  <div class="levelup-toast" id="levelupToast">
+    <div class="levelup-inner">
+      <div class="levelup-emoji" id="levelupEmoji">🎉</div>
+      <div class="levelup-text">
+        <strong id="levelupTitle">Level Up!</strong>
+        <span id="levelupSub">You reached Scholar!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ XP POPUP ══ -->
+  <div class="xp-popup" id="xpPopup"></div>
+
+  <!-- ══ DELETE PROFILE MODAL ══ -->
+  <div class="modal-overlay" id="deleteModal" onclick="closeDeleteProfile()">
+    <div class="modal-card danger-modal" onclick="event.stopPropagation()">
+      <div class="modal-icon">⚠️</div>
+      <h3 class="modal-title">Delete Profile</h3>
+      <p class="modal-desc">This will permanently delete your account and <strong>all your data</strong>. This cannot be undone.</p>
+      <div class="modal-confirm-row">
+        <label>Type your username to confirm:</label>
+        <input type="text" id="deleteConfirmInput" placeholder="Enter your username"/>
+      </div>
+      <div id="deleteError" class="error-msg" style="display:none;"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeDeleteProfile()">Cancel</button>
+        <button class="btn btn-danger"  onclick="confirmDeleteProfile()">Delete Forever</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CHANGE PASSWORD MODAL ══ -->
+  <div class="modal-overlay" id="changePassModal" onclick="closeChangePassword()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <h3 class="modal-title">🔑 Change Password</h3>
+      <div class="form-group">
+        <label>Current Password</label>
+        <input type="password" id="oldPass" placeholder="Current password"/>
+      </div>
+      <div class="form-group">
+        <label>New Password</label>
+        <input type="password" id="newPass" placeholder="New password (min 4 chars)"/>
+      </div>
+      <div class="form-group">
+        <label>Confirm New Password</label>
+        <input type="password" id="newPassConfirm" placeholder="Repeat new password"/>
+      </div>
+      <div id="changePassError" class="error-msg" style="display:none;"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeChangePassword()">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmChangePassword()">Update Password</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
